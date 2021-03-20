@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const flix_scrape = require('../population/flixable-scrape.js')
+const flix_scrape = require('../population/scraping/flixable-scrape.js')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

@@ -1,11 +1,11 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
-const globals = require('../globals.js');
+const globals = require('../../globals.js');
 
-let Entertainment = require('../models/entertainment');
-let Image = require('../models/image');
-let Genre = require('../models/genre');
+let Entertainment = require('../../models/entertainment');
+let Image = require('../../models/image');
+let Genre = require('../../models/genre');
 
 const flixable_url = 'http://www.flixable.com';
 const netflix_movies_url = "https://flixable.com/genre/movies/#filterForm";
