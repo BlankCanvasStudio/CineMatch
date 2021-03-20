@@ -1,0 +1,8 @@
+Server Software: NodeJS running express
+Database: Mongodb
+Authentication: Auth0
+
+Webscraping:
+    headless browser: puppeteer
+    Cheerio for nice jQuery style writing
+    axios to load the webpage info in if not puppeteer

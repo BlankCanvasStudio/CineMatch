@@ -1,8 +1,86 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
 }
-
 a {
   color: #00B7FF;
+}
+.container-fluid{
+  padding:10px;
+}
+.main-body{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  padding-top:0px;
+}
+.card-footer {
+  padding-bottom:5rem;
+}
+div.card-footer p {
+  margin-bottom:0px;
+}
+div.col {
+  margin-top:2rem;
+}
+.btn.btn-sqr {
+  border-radius: 0 !important;
+}
+/* Color Palette */
+:root{
+  --red-1: #b20405;
+  --red-2: #b62810;
+  --orange-1: #bc3f09;
+  --orange-2: #9e3c17;
+  --orange-3: #c58b0e;
+  --brown-1: #5a4824;
+  --brown-2: #9f5410;
+  --brown-3: #ab8d44;
+  --yellow-1: #fcdf1f;
+  --yellow-2: #f0e186;
+}
+
+/* Coloring the page nicely below this point */
+.title-display {
+  background: var(--yellow-2)
+}
+.navbar {
+  background: var(--red-2);
+}
+.navbar .nav-item a, 
+.nav-item .dropdown-menu a,
+.nav-item .dropdown a,
+li.nav-item.dropdown,
+.navbar a {
+  color: black;
+}
+.navbar .nav-item a:hover, 
+.nav-item .dropdown-menu a:hover,
+.nav-item .dropdown a:hover,
+li.nav-item.dropdown:hover,
+.navbar a:hover {
+  color: var(--yellow-2);
+}
+.btn-outline-success {
+  border-color: var(--yellow-1) !important;
+  color:var(--yellow-1) !important;
+
+}
+.btn-outline-success:hover {
+  border-color: var(--yellow-1) !important;
+  background-color: var(--yellow-1) !important;
+  color:black !important;
+
+}
+.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited {
+  border-color: var(--yellow-1) !important;
+  background-color: var(--yellow-1) !important;
+  color:black !important;
+}
+.btn-danger, .btn-danger:hover, .btn-danger:active, .btn-danger:visited {
+  border-color: var(--red-1) !important;
+  background-color: var(--red-1) !important;
+  color:black !important;
 }

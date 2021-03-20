@@ -1,0 +1,34 @@
+extends layout 
+
+block edit_title    
+    script(src="/javascripts/home.js" defer)
+
+block content 
+        - var i = 0;
+        div.row.title-display
+            while i < entertainment.length
+                div.col
+                    div.card(style="width: 25rem;")
+                        a(href=entertainment[i].url)
+                            img.card-img-top(src=entertainment[i].img.src alt=entertainment[i].img.alt)
+                        div.card-header
+                            button.btn.btn-danger(style="float:left;" type="button") No
+                            button.btn.btn-success(style="float:right" type="button") Yes
+                        div.card-body 
+                            h3.card-title #{entertainment[i].title}
+                            p.card-text Description:
+                            p.card-text #{entertainment[i].description}
+                        a.btn.btn-primary.btn-sqr(href=entertainment[i].url) Watch Now
+                        div.card-footer.text-muted
+                            p Platform: #{entertainment[i].platform}
+                            p Genres: 
+                                - var j = 0
+                                while j < (entertainment[i].genre.length - 1)
+                                    |  #{entertainment[i].genre[j]}, 
+                                    - j++
+                                if entertainment[i].genre.length
+                                    |  #{entertainment[i].genre[entertainment[i].genre.length - 1]}
+                                else 
+                                    |  None
+                            
+                - i++

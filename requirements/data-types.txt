@@ -1,0 +1,26 @@
+Users:
+ID #
+Name (optional)
+Username (not optional)
+List of friends (ID#s?)
+List of Entertainment you want to watch 
+List of Entertainment you don't like?
+List of material already watched
+Genres you like 
+Password
+
+
+I really would love to load this all dynamically from the website but I think it just isn't feasible with speed 
+    But I think if the user wants more detail information we can just either direct them to the page or load the page 
+    and get more information from it
+Entertainment:
+URL to material
+Type of material 
+Genres 
+    This allows us to filter our database. This means that we don't have to go to the netflix website  bunch of times 
+Title 
+Photo of movie 
+
+
+
+

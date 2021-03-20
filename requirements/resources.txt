@@ -1,0 +1,12 @@
+web scraping in nodeJS: https://www.scrapingbee.com/blog/web-scraping-javascript/
+
+saving photos in mongodb: 
+    https://medium.com/@alvenw/how-to-store-images-to-mongodb-with-node-js-fb3905c37e6d
+
+Wildly good netflix scraping github: https://github.com/maxwell-martin/netflix-movies-scraper/blob/master/scraper.js
+    Massive props for the genre search tactic, that is truly brilliant
+
+
+
+
+
