@@ -1,16 +1,46 @@
 extends layout 
 
+block edit_title    
+    script(src="/javascripts/cards.js" defer)
+    script(src="/javascripts/friends.js" defer)
+
 block content 
     div.row.fill-height
-        div.col-2.friends-menu
+        div.col-2.friends-menu.yellow-2
             h3 <u>Friends</u>
-            p This is the friends sidebar
-        div.col.friends-main
+            div#list-tab.list-group(role="tablist")
+                for friend in user.friends 
+                    a.list-group-item.list-group-item-action(id="list-"+friend.email.split('@')[0]+"-list" data-toggle="list" href="#"+friend.email.split('@')[0] role="tab" aria-controls=friend.email.split('@')[0] onlcick="")
+                        | #{friend.nickname}
+                else 
+                    h4 You have no friends!
+
+        div.col.friends-main.yellow-2
             div.row.friends-lookup
                 label.col-form-label.my-auto(for="friends-lookup" style="padding-top:1rem;") Search for friends:
                 div.col(style="margin-top:1rem;")
-                    input.form-control.mr-sm-2(type="search" placeholder="Search For Friends" aria-label="Search" name="friends-lookup")
+                    input.form-control.mr-sm-2(type="search" placeholder="Enter Email" aria-label="Search" name="friends-lookup")
                 button.btn.btn-outline-success.my-2.my-sm-0.lookup-fit(type="button" style="margin-top:1rem !important;") Lookup Friends
-            div.row 
+            div.row
                 div.col
-                    p This is the main body of friends page
+                    div#nav-tabContent.tab-content
+                        for friend in user.friends 
+                             div.tab-pane.container(id=friend.email.split('@')[0] role="tabpannel" aria-labelledby="list-"+friend.email.split('@')[0]+"-list")
+                                h2 <u>#{friend.nickname}'s Profile</u>
+                                h5 
+                                    | Likes: 
+                                    for genre in friend.genres
+                                        |  #{genre.text},
+                                    else 
+                                        h5 No liked generes listed
+                                h4 Their List: 
+                                div(class="row to-watch-list to-watch-"+friend.email.split('@')[0])
+                                    for ent in friend.to_watch 
+                                        input(type="hidden" value=ent)
+                                <br/>
+                                <br/>
+                                h4 Their Watched List:
+                                div(class="row watched-list watched-"+friend.email.split('@')[0])
+                                    for ent in friend.watched 
+                                        input(type="hidden" value=ent)
+                                

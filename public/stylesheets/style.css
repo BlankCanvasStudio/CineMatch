@@ -48,7 +48,16 @@ div.col {
 .fill-height{ 
   height:100%;
 }
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -5%);
+}
 
+/* friends section */
 .friends-menu{
   padding-top:1rem;
   border-right: 3px dotted black;
@@ -62,6 +71,12 @@ div.col {
   padding-left:15px !important;
   padding-right:15px !important;
   border-bottom: 3px dotted black;
+}
+.list-group-item-action {
+  margin-top:1rem !important;
+}
+.tab-pane{ 
+  text-align:center;
 }
 
 
@@ -84,6 +99,9 @@ div.col {
 .main-body, 
 .title-display {
   /* These need to be the same color so we get around growing and color issues */ 
+  background: var(--yellow-2);
+}
+.yellow-2{
   background: var(--yellow-2);
 }
 .navbar {

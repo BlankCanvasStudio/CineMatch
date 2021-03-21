@@ -39,9 +39,9 @@ router.post('/', function(req,res, next){
         });
     }
     if(req.body.type==="add-to-list"){
-        let user_id = req.oidc.user.sub.split('|')[1];
+        let user_email = req.oidc.user.email;
         let entertainment = req.body.id_num;
-        User.findOne({_id:user_id}).exec((err, user) => {
+        User.findOne({email:user_email}).exec((err, user) => {
             // Might want to do an email search or something instead but idc rn
             if(err){console.log(err); return;}
             user.to_watch.push(new ObjectID(entertainment));
@@ -50,9 +50,9 @@ router.post('/', function(req,res, next){
         });
     }
     if(req.body.type==="move-to-watched"){
-        let user_id = req.oidc.user.sub.split('|')[1];
+        let user_email = req.oidc.user.email;
         let entertainment = req.body.id_num;
-        User.findOne({_id:user_id}).exec((err, user) => {
+        User.findOne({email:user_email}).exec((err, user) => {
             // Might want to do an email search or something instead but idc rn
             if(err){console.log(err); return;}
             removeItem(user.to_watch, entertainment);
@@ -61,9 +61,9 @@ router.post('/', function(req,res, next){
         });
     }
     if(req.body.type==="remove-from-list"){
-      let user_id = req.oidc.user.sub.split('|')[1];
+    let user_email = req.oidc.user.email;
       let entertainment = req.body.id_num;
-      User.findOne({_id:user_id}).exec((err, user) => {
+      User.findOne({email:user_email}).exec((err, user) => {
           // Might want to do an email search or something instead but idc rn
           if(err){console.log(err); return;}
           removeItem(user.to_watch, entertainment);
@@ -71,15 +71,21 @@ router.post('/', function(req,res, next){
       });
     }
     if(req.body.type==="remove-from-watched"){
-        let user_id = req.oidc.user.sub.split('|')[1];
+        let user_email = req.oidc.user.email;
         let entertainment = req.body.id_num;
-        User.findOne({_id:user_id}).exec((err, user) => {
+        User.findOne({email:user_email}).exec((err, user) => {
             // Might want to do an email search or something instead but idc rn
             if(err){console.log(err); return;}
             removeItem(user.watched, entertainment);
             user.save();
         }); 
-      }
+    }
+    if(req.body.type==="load-movie"){
+        let user_email = req.oidc.user.email;
+        Entertainment.findOne({_id:req.body.id_num}).populate('img').exec((err, entertainment)=>{
+            res.json(ent_to_JSObj(entertainment));
+        }); 
+    }
 })
 
 router.get('/', function(req, res, next) {

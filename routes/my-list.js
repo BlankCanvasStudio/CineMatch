@@ -19,7 +19,8 @@ function removeItem(array, item) {
 
 router.get('/', function(req, res, next){
     let user_id = req.oidc.user.sub.split('|')[1];
-    User.findOne({_id:user_id}).populate(
+    let user_email = req.oidc.user.email;
+    User.findOne({email:user_email}).populate(
         {
           path: 'to_watch',
           model: 'Entertainment',

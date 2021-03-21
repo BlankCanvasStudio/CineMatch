@@ -1,7 +1,13 @@
-async function load_new_movie(next){
+async function load_new_movie(next, jq_location){
     let plat = $('#navbarDropdown').text();
     $.post(window.location.pathname+'?platform='+plat, { type:"new-movie", platform:plat }, function(data, status){
-        next(data);
+        next(data, jq_location);
+    });
+}
+async function load_specific_movie(id_num, next, jq_location){
+    let plat = $('#navbarDropdown').text();
+    $.post(window.location.pathname+'?platform='+plat, { type:"load-movie", platform:plat, id_num:id_num }, function(data, status){
+        next(data, jq_location);
     });
 }
 async function add_new_movie_to_list(id_num, next){
@@ -21,15 +27,17 @@ function remove_from_watched(id_num){
     $.post(window.location.pathname, { type:"remove-from-watched", id_num:id_num });
 }
 
-async function build_new_movie_card(movie){
+async function build_new_movie_card(movie, jq_location){
     // Create and add Column for new card
     let new_col = document.createElement("div");
     new_col.className = "col";
-    $('.title-display').append(new_col);
+    console.log(jq_location);
+    $(jq_location).append(new_col);
+    console.log($(jq_location));
 
     // Create and add new card
     let card = document.createElement('div');
-    card.className = "card movie-card";
+    card.className = "card movie-card mx-auto";
     $(new_col).append(card);
 
     // Add hidden ID field for later use
@@ -71,7 +79,7 @@ async function build_new_movie_card(movie){
     // Add whole thing to the card 
     $(card).append(link_wrapper);
 
-    // Create yes/no button section & buttons
+    // Create yes/no and watched button section & buttons
     // Create and append container
     let yesno_container = document.createElement('div');
     yesno_container.className = "card-header";
@@ -86,6 +94,11 @@ async function build_new_movie_card(movie){
     yes_btn.className = "btn btn-yes decision affirmative";
     $(yes_btn).attr("type", "button").text("Yes");
     $(yesno_container).append(yes_btn);
+    //Create Watched button and add it
+    let watched_btn = document.createElement('button');
+    watched_btn.className = "btn btn-success center decision watched";
+    $(watched_btn).attr("type", "button").text("Watched");
+    $(yesno_container).append(watched_btn);
 
     // Create Description section & add it
     // Create body section & add it
@@ -128,25 +141,36 @@ async function build_new_movie_card(movie){
     $(footer).append(genres)
 }
 
-async function display_new_movie(){
+async function display_new_movie(jq_location){
     //let new_movie =;
-    load_new_movie(build_new_movie_card);
+    load_new_movie(build_new_movie_card, jq_location);
     //build_new_movie_card( await load_new_movie());
     return;
 }
 
 function likes_movie(id_num) {
-    console.log('likes')
-    console.log('id num: ', id_num);
     add_new_movie_to_list(id_num);
-    display_new_movie();
+    display_new_movie('.title-display');
     
 }
 
 function hates_movie(id_num){
-    console.log('hates');
-    console.log('id num: ', id_num);
-    display_new_movie();
+    display_new_movie('.title-display');
+}
+
+function populate_profile_to_watch(id_num, nickname){
+    if(!Array.isArray(id_num)){id_num=[id_num];}
+    let len = id_num.length;
+    for(let i=0; i<len; i++){
+        load_specific_movie(id_num[i], build_new_movie_card, '.to-watch-'+nickname);
+    }
+}
+function populate_profile_watched(id_num, nickname){
+    if(!Array.isArray(id_num)){id_num=[id_num];}
+    let len = id_num.length;
+    for(let i=0; i<len; i++){
+        load_specific_movie(id_num[i], build_new_movie_card, '.watched-'+nickname);
+    }
 }
 
 $(document).ready(() => {
@@ -169,6 +193,12 @@ $(document).ready(() => {
     $(document).on("click", ".watched", function(){
         let id_num = $($(this).parents()[1]).find('input.id_num').val()
         watched(id_num);
+    });
+    $(document).on("click", ".watched-home", function(){
+        // We want this to move to watch and add new movie but in a place like list we don't want it to add a new movie
+        let id_num = $($(this).parents()[1]).find('input.id_num').val()
+        watched(id_num);
+        display_new_movie('.title-display');
     });
     $(document).on("click", ".rm-list", function(){
         let id_num = $($(this).parents()[1]).find('input.id_num').val()
