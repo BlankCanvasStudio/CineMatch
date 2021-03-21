@@ -47,13 +47,10 @@ router.post('/', function(req,res, next){
 
 
 router.get('/', function(req, res, next) {
-<<<<<<< HEAD
     let entertainment = reteieve.return_home_default("Netflix", 15, (entertainment) => {
-=======
     reteieve.return_home_default((req.query.platform || "Netflix").replace("Plus", "+"), 15, (entertainment) => {
         // + denotes another value so we had to change is to 'Plus' then we replace it with + but if the param isn't there then we 
             // have an issue so we put it outside the quotes and it works just fine
->>>>>>> bb8798919ec9b57c1bb46ab5c133e242367b40fd
         res.render('home', { title: 'CineMatch Home', entertainment:entertainment });
     });
 });
