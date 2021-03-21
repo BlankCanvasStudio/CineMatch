@@ -8,7 +8,7 @@ const reteieve = require('../population/retrieve-titles/retrieve.js')
 
 
 router.get('/', function(req, res, next) {
-    let entertainment = reteieve.return_home_default("Disney+", 15, (entertainment) => {
+    let entertainment = reteieve.return_home_default("Netflix", 15, (entertainment) => {
         res.render('home', { title: 'CineMatch Home', entertainment:entertainment });
     });
 });
