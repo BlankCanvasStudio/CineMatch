@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "auth0": "^2.33.0",
     "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.5",
     "cookie-parser": "~1.4.4",

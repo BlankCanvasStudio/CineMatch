@@ -1,7 +1,7 @@
 extends layout 
 
 block edit_title    
-    script(src="/javascripts/home.js" defer)
+    script(src="/javascripts/cards.js" defer)
 
 block content 
         - var i = 0;
@@ -17,8 +17,9 @@ block content
                         a(href=entertainment[i].url)
                             img.card-img-top(src=entertainment[i].img.src alt=entertainment[i].img.alt)
                         div.card-header
-                            button.btn.btn-danger.decision.negative(type="button") No
-                            button.btn.btn-success.decision.affirmative(type="button") Yes
+                            button.btn.btn-no.decision.negative(type="button") No
+                            button.btn.btn-yes.decision.affirmative(type="button") Yes
+                            
                         div.card-body 
                             p.card-text #{entertainment[i].description}
                         a.btn.btn-primary(href=entertainment[i].url) Watch Now

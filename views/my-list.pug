@@ -1,0 +1,74 @@
+extends layout 
+
+block edit_title    
+    script(src="/javascripts/cards.js" defer)
+
+block content 
+        - var i = 0;
+        div.row 
+            div.col
+                h1 <u>My List</u>
+        div.row.title-display.my-list
+            while i < entertainment.length
+                div.col
+                    div.card.movie-card
+                        input.id_num(type="hidden" value=entertainment[i]._id)
+                        div.card-header.header-top
+                            button.close.decision.rm-list(type="button" aria-label="Close")
+                                <span aria-hidden="true">&times;</span>
+                            h3.card-title #{entertainment[i].title}
+                        a(href=entertainment[i].url)
+                            img.card-img-top(src=entertainment[i].img.src alt=entertainment[i].img.alt)
+                        div.card-header
+                            button.btn.btn-block.btn-success.decision.watched(type="button") Watched
+                        div.card-body 
+                            p.card-text #{entertainment[i].description}
+                        a.btn.btn-primary(href=entertainment[i].url) Watch Now
+                        div.card-footer.text-muted
+                            p Platform: #{entertainment[i].platform}
+                            p Genres: 
+                                - var j = 0
+                                while j < (entertainment[i].genre.length - 1)
+                                    |  #{entertainment[i].genre[j]}, 
+                                    - j++
+                                if entertainment[i].genre.length
+                                    |  #{entertainment[i].genre[entertainment[i].genre.length - 1]}
+                                else 
+                                    |  None
+                            
+                - i++
+        - var i = 0;
+        div.row 
+            div.col 
+                <br/>
+                <br/>
+        div.row 
+            div.col
+                h1 <u>My Watched Titles</u>
+        div.row.title-display.watched
+            while i < entertainment_watched.length
+                div.col
+                    div.card.movie-card
+                        input.id_num(type="hidden" value=entertainment_watched[i]._id)
+                        div.card-header.header-top
+                            button.close.decision.rm-watched(type="button" aria-label="Close")
+                                <span aria-hidden="true">&times;</span>
+                            h3.card-title #{entertainment_watched[i].title}
+                        a(href=entertainment_watched[i].url)
+                            img.card-img-top(src=entertainment_watched[i].img.src alt=entertainment_watched[i].img.alt)
+                        div.card-body 
+                            p.card-text #{entertainment_watched[i].description}
+                        a.btn.btn-primary(href=entertainment_watched[i].url) Watch Now
+                        div.card-footer.text-muted
+                            p Platform: #{entertainment_watched[i].platform}
+                            p Genres: 
+                                - var j = 0
+                                while j < (entertainment_watched[i].genre.length - 1)
+                                    |  #{entertainment_watched[i].genre[j]}, 
+                                    - j++
+                                if entertainment_watched[i].genre.length
+                                    |  #{entertainment_watched[i].genre[entertainment_watched[i].genre.length - 1]}
+                                else 
+                                    |  None
+                            
+                - i++

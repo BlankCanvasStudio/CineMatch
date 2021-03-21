@@ -1,0 +1,16 @@
+extends layout 
+
+block content 
+    div.row.fill-height
+        div.col-2.friends-menu
+            h3 <u>Friends</u>
+            p This is the friends sidebar
+        div.col.friends-main
+            div.row.friends-lookup
+                label.col-form-label.my-auto(for="friends-lookup" style="padding-top:1rem;") Search for friends:
+                div.col(style="margin-top:1rem;")
+                    input.form-control.mr-sm-2(type="search" placeholder="Search For Friends" aria-label="Search" name="friends-lookup")
+                button.btn.btn-outline-success.my-2.my-sm-0.lookup-fit(type="button" style="margin-top:1rem !important;") Lookup Friends
+            div.row 
+                div.col
+                    p This is the main body of friends page

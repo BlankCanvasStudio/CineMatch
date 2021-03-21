@@ -1,14 +1,24 @@
 async function load_new_movie(next){
     let plat = $('#navbarDropdown').text();
-    $.post('/home?platform='+plat, { type:"new-movie", platform:plat }, function(data, status){
+    $.post(window.location.pathname+'?platform='+plat, { type:"new-movie", platform:plat }, function(data, status){
         next(data);
     });
 }
 async function add_new_movie_to_list(id_num, next){
     let plat = $('#navbarDropdown').text();
-    $.post('/home?platform='+plat, { type:"add-to-list", id_num:id_num }, function(data, status){
-        return;
-    });
+    $.post(window.location.pathname+'?platform='+plat, { type:"add-to-list", id_num:id_num });
+}
+function watched(id_num){
+    let plat = $('#navbarDropdown').text();
+    $.post(window.location.pathname, { type:"move-to-watched", id_num:id_num });
+}
+function remove_from_list(id_num){
+    let plat = $('#navbarDropdown').text();
+    $.post(window.location.pathname, { type:"remove-from-list", id_num:id_num });
+}
+function remove_from_watched(id_num){
+    let plat = $('#navbarDropdown').text();
+    $.post(window.location.pathname, { type:"remove-from-watched", id_num:id_num });
 }
 
 async function build_new_movie_card(movie){
@@ -68,12 +78,12 @@ async function build_new_movie_card(movie){
     $(card).append(yesno_container);
     // Create No Button & add it
     let no_btn = document.createElement('button');
-    no_btn.className = "btn btn-danger decision negative";
+    no_btn.className = "btn btn-no decision negative";
     $(no_btn).attr("type", "button").text("No");
     $(yesno_container).append(no_btn);
     // Create Yes Button & add it
     let yes_btn = document.createElement('button');
-    yes_btn.className = "btn btn-success decision affirmative";
+    yes_btn.className = "btn btn-yes decision affirmative";
     $(yes_btn).attr("type", "button").text("Yes");
     $(yesno_container).append(yes_btn);
 
@@ -139,8 +149,6 @@ function hates_movie(id_num){
     display_new_movie();
 }
 
-
-
 $(document).ready(() => {
     $(document).on("click", ".decision", function() {
         // This makes the element disappear then removes it cause we don't want all the 
@@ -157,5 +165,17 @@ $(document).ready(() => {
     $(document).on("click", ".affirmative", function() {
         let id_num = $($(this).parents()[1]).find('input.id_num').val()
         likes_movie(id_num);
+    });
+    $(document).on("click", ".watched", function(){
+        let id_num = $($(this).parents()[1]).find('input.id_num').val()
+        watched(id_num);
+    });
+    $(document).on("click", ".rm-list", function(){
+        let id_num = $($(this).parents()[1]).find('input.id_num').val()
+        remove_from_list(id_num);
+    });
+    $(document).on("click", ".rm-watched", function(){
+        let id_num = $($(this).parents()[1]).find('input.id_num').val()
+        remove_from_list(id_num);
     });
 });

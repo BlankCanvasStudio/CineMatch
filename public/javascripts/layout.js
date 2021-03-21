@@ -15,8 +15,21 @@ var getUrlParameter = function getUrlParameter(sParam) {
 };
 
 $(document).ready(()=>{
-    let searchParams = getUrlParameter('platform');
-    if(searchParams){
-        $('#navbarDropdown').text(searchParams.replace("Plus", "+"));
+    let platform = getUrlParameter('platform');
+    if(platform){
+        $('#navbarDropdown').text(platform.replace("Plus", "+"));
+        if(platform==="All"){
+            $('div.row.title-display div.col').fadeIn("slow");
+        } else{
+            platform = platform.replace("Plus", "+");
+            $('div.row.title-display div.col').each((index, value) => {
+                let plat = $($(value).find("div.card-footer p")[0]).text().split(':')[1].trim();
+                if(plat===platform){
+                    $(value).show();
+                } else {
+                    $(value).hide();
+                }
+            });
+        }
     }
 })

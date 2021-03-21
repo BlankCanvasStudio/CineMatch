@@ -6,9 +6,10 @@ var logger = require('morgan');
 const axios = require('axios');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var adminRouter = require('.//routes/admin');
 var homeRouter = require('./routes/home');
+var listRouter = require('./routes/my-list');
+var friendsRouter = require('./routes/friends');
 
 var app = express();
 
@@ -20,7 +21,6 @@ mongoose.connect("mongodb+srv://BlankCanvasStudio:Kab00m12@cluster0.hmcxw.mongod
 });
 
 const { auth } = require('express-openid-connect');
-
 const config = {
   authRequired: false,
   auth0Logout: true,
@@ -44,11 +44,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const { requiresAuth } = require('express-openid-connect');
-app.use('/', requiresAuth(), indexRouter);
-app.use('/users', requiresAuth(), usersRouter);
+app.use('/', requiresAuth(), homeRouter);
 app.use('/admin', requiresAuth(), adminRouter);
+app.use('/friends', requiresAuth(), friendsRouter);
 app.use('/home', requiresAuth(), homeRouter);
-app.get('/profile', requiresAuth(), (req, res) => {
+app.use('/my-list', requiresAuth(), listRouter);
+app.get('/settings', requiresAuth(), (req, res) => {
   res.send(JSON.stringify(req.oidc.user));
 });
 

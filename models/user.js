@@ -3,13 +3,18 @@ let Schema = mongoose.Schema;
 
 let UserSchema = new Schema(
     {
-        username: {type:String, maxlength:20},
+        tennant:{type:String},
+        client_id:{type:String},
+        connection:{type:String},
+        email: {type:String},
+        password:{type:String},
+        request_language:{type:String},
+        email_verified:{type:Boolean},
         friends: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-        to_watch: [{type: mongoose.Schema.Types.ObjectId, ref: 'Entertainment'}],
+        to_watch: [{type: mongoose.Schema.Types.ObjectId, ref: 'Entertainment', unique:true}],
         watched: [{type: mongoose.Schema.Types.ObjectId, ref: 'Entertainment'}],
         genres: [{type:String}],
-        authID: {type:String},
-        email: {type:String},
+        
     }
 );
 

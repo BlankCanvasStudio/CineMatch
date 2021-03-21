@@ -45,6 +45,27 @@ div.col {
 .affirmative {
   float: right;
 }
+.fill-height{ 
+  height:100%;
+}
+
+.friends-menu{
+  padding-top:1rem;
+  border-right: 3px dotted black;
+  overflow-y:auto;
+}
+.friends-main{
+  margin-top:0rem !important;
+}
+.friends-lookup{
+  padding-bottom:1rem !important;
+  padding-left:15px !important;
+  padding-right:15px !important;
+  border-bottom: 3px dotted black;
+}
+
+
+
 /* Color Palette */
 :root{
   --red-1: #b20405;
@@ -82,23 +103,23 @@ li.nav-item.dropdown:hover,
 .navbar a:hover {
   color: var(--yellow-2);
 }
-.btn-outline-success {
+.btn-outline-light {
   border-color: var(--yellow-1) !important;
   color:var(--yellow-1) !important;
 
 }
-.btn-outline-success:hover {
+.btn-outline-light:hover {
   border-color: var(--yellow-1) !important;
   background-color: var(--yellow-1) !important;
   color:black !important;
 
 }
-.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited {
+.btn-yes, .btn-yes:hover, .btn-yes:active, .btn-yes:visited {
   border-color: var(--yellow-1) !important;
   background-color: var(--yellow-1) !important;
   color:black !important;
 }
-.btn-danger, .btn-danger:hover, .btn-danger:active, .btn-danger:visited {
+.btn-no, .btn-no:hover, .btn-no:active, .btn-no:visited {
   border-color: var(--red-1) !important;
   background-color: var(--red-1) !important;
   color:black !important;

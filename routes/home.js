@@ -5,7 +5,8 @@ let Entertainment = require('../models/entertainment');
 let Image = require('../models/image');
 let Genre = require('../models/genre');
 let User = require('../models/user');
-const reteieve = require('../population/retrieve-titles/retrieve.js')
+const reteieve = require('../population/retrieve-titles/retrieve.js');
+let ObjectID = require('mongodb').ObjectID
 
 function ent_to_JSObj(entertainment){
     let new_ent = {
@@ -20,7 +21,15 @@ function ent_to_JSObj(entertainment){
     };
     return new_ent;
 }
-
+function removeItem(array, item) {
+    var i = array.length;
+  
+    while (i--) {
+        if (array[i].toString() === item) {
+            array.splice(array.indexOf(item), 1);
+        }
+    }
+  }
 
 router.post('/', function(req,res, next){
     if(req.body.type==="new-movie"){
@@ -30,28 +39,56 @@ router.post('/', function(req,res, next){
         });
     }
     if(req.body.type==="add-to-list"){
-        console.log(req.oidc.user)
         let user_id = req.oidc.user.sub.split('|')[1];
         let entertainment = req.body.id_num;
-        console.log(user_id);
-        console.log(entertainment);
-        /*User.findOne({authID:user_id}).exec((err, user) => {
+        User.findOne({_id:user_id}).exec((err, user) => {
             // Might want to do an email search or something instead but idc rn
             if(err){console.log(err); return;}
-            user.to_watch.append(entertainment);
+            user.to_watch.push(new ObjectID(entertainment));
             user.save();
-            res.send('Done');
-        })*/
+            //res.send('Done');
+        });
     }
+    if(req.body.type==="move-to-watched"){
+        let user_id = req.oidc.user.sub.split('|')[1];
+        let entertainment = req.body.id_num;
+        User.findOne({_id:user_id}).exec((err, user) => {
+            // Might want to do an email search or something instead but idc rn
+            if(err){console.log(err); return;}
+            removeItem(user.to_watch, entertainment);
+            user.watched.push(new ObjectID(entertainment));
+            user.save();
+        });
+    }
+    if(req.body.type==="remove-from-list"){
+      let user_id = req.oidc.user.sub.split('|')[1];
+      let entertainment = req.body.id_num;
+      User.findOne({_id:user_id}).exec((err, user) => {
+          // Might want to do an email search or something instead but idc rn
+          if(err){console.log(err); return;}
+          removeItem(user.to_watch, entertainment);
+          user.save();
+      });
+    }
+    if(req.body.type==="remove-from-watched"){
+        let user_id = req.oidc.user.sub.split('|')[1];
+        let entertainment = req.body.id_num;
+        User.findOne({_id:user_id}).exec((err, user) => {
+            // Might want to do an email search or something instead but idc rn
+            if(err){console.log(err); return;}
+            removeItem(user.watched, entertainment);
+            user.save();
+        }); 
+      }
 })
-
 
 router.get('/', function(req, res, next) {
     let entertainment = reteieve.return_home_default("Netflix", 15, (entertainment) => {
-    reteieve.return_home_default((req.query.platform || "Netflix").replace("Plus", "+"), 15, (entertainment) => {
-        // + denotes another value so we had to change is to 'Plus' then we replace it with + but if the param isn't there then we 
-            // have an issue so we put it outside the quotes and it works just fine
-        res.render('home', { title: 'CineMatch Home', entertainment:entertainment });
+        reteieve.return_home_default((req.query.platform || "Netflix").replace("Plus", "+"), 15, (entertainment) => {
+            // + denotes another value so we had to change is to 'Plus' then we replace it with + but if the param isn't there then we 
+                // have an issue so we put it outside the quotes and it works just fine
+            res.render('home', { title: 'CineMatch Home', entertainment:entertainment });
+        });
     });
 });
 
