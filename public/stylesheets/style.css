@@ -15,6 +15,7 @@ a {
   flex-flow: column;
   height: 100%;
   padding-top:0px;
+  padding-bottom:0px;
 }
 .card-footer {
   padding-bottom:5rem;
@@ -27,6 +28,22 @@ div.col {
 }
 .btn.btn-sqr {
   border-radius: 0 !important;
+}
+.header-top {
+  padding-bottom:calc(1rem / 2);
+}
+.header-top h3{
+  display:inline-block;
+  margin-bottom:0px;
+}
+.movie-card {
+  width: 25rem;
+}
+.negative {
+  float:left;
+}
+.affirmative {
+  float: right;
 }
 /* Color Palette */
 :root{
@@ -43,8 +60,10 @@ div.col {
 }
 
 /* Coloring the page nicely below this point */
+.main-body, 
 .title-display {
-  background: var(--yellow-2)
+  /* These need to be the same color so we get around growing and color issues */ 
+  background: var(--yellow-2);
 }
 .navbar {
   background: var(--red-2);
@@ -83,4 +102,9 @@ li.nav-item.dropdown:hover,
   border-color: var(--red-1) !important;
   background-color: var(--red-1) !important;
   color:black !important;
+}
+.btn-primary{
+  border-color: var(--brown-2) !important;
+  background-color: var(--brown-2) !important;
+  color: var(--yellow-2) !important;
 }

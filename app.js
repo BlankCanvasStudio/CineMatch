@@ -19,6 +19,19 @@ mongoose.connect("mongodb+srv://BlankCanvasStudio:Kab00m12@cluster0.hmcxw.mongod
   useNewUrlParser: true
 });
 
+const { auth } = require('express-openid-connect');
+
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: 'a long, randomly-generated string stored in env',
+  baseURL: 'http://localhost:3000',
+  clientID: 'JBkaortATzYpOG4vfArvZOhKe7TBVIFr',
+  issuerBaseURL: 'https://dev-igdtmyli.us.auth0.com'
+};
+
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(config));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,10 +43,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/admin', adminRouter);
-app.use('/home', homeRouter);
+const { requiresAuth } = require('express-openid-connect');
+app.use('/', requiresAuth(), indexRouter);
+app.use('/users', requiresAuth(), usersRouter);
+app.use('/admin', requiresAuth(), adminRouter);
+app.use('/home', requiresAuth(), homeRouter);
+app.get('/profile', requiresAuth(), (req, res) => {
+  res.send(JSON.stringify(req.oidc.user));
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

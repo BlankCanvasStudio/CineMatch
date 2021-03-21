@@ -7,8 +7,9 @@ let UserSchema = new Schema(
         friends: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
         to_watch: [{type: mongoose.Schema.Types.ObjectId, ref: 'Entertainment'}],
         watched: [{type: mongoose.Schema.Types.ObjectId, ref: 'Entertainment'}],
-        genres: [{type:String, maxlength:10}],
+        genres: [{type:String}],
         authID: {type:String},
+        email: {type:String},
     }
 );
 
