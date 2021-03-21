@@ -8,17 +8,20 @@ block content
         div.row.title-display
             while i < entertainment.length
                 div.col
-                    div.card(style="width: 25rem;")
+                    div.card.movie-card
+                        input.id_num(type="hidden" value=entertainment[i]._id)
+                        div.card-header.header-top
+                            button.close.decision(type="button" aria-label="Close")
+                                <span aria-hidden="true">&times;</span>
+                            h3.card-title #{entertainment[i].title}
                         a(href=entertainment[i].url)
                             img.card-img-top(src=entertainment[i].img.src alt=entertainment[i].img.alt)
                         div.card-header
-                            button.btn.btn-danger(style="float:left;" type="button") No
-                            button.btn.btn-success(style="float:right" type="button") Yes
+                            button.btn.btn-danger.decision.negative(type="button") No
+                            button.btn.btn-success.decision.affirmative(type="button") Yes
                         div.card-body 
-                            h3.card-title #{entertainment[i].title}
-                            p.card-text Description:
                             p.card-text #{entertainment[i].description}
-                        a.btn.btn-primary.btn-sqr(href=entertainment[i].url) Watch Now
+                        a.btn.btn-primary(href=entertainment[i].url) Watch Now
                         div.card-footer.text-muted
                             p Platform: #{entertainment[i].platform}
                             p Genres: 
