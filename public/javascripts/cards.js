@@ -1,3 +1,17 @@
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] === sParam) {
+            return typeof sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+    return false;
+};
+
 async function load_new_movie(next, jq_location){
     let plat = $('#navbarDropdown').text();
     $.post(window.location.pathname+'?platform='+plat, { type:"new-movie", platform:plat }, function(data, status){
@@ -8,6 +22,7 @@ async function load_specific_movie(id_num, next, jq_location){
     let plat = $('#navbarDropdown').text();
     $.post(window.location.pathname+'?platform='+plat, { type:"load-movie", platform:plat, id_num:id_num }, function(data, status){
         next(data, jq_location);
+
     });
 }
 async function add_new_movie_to_list(id_num, next){
@@ -31,9 +46,7 @@ async function build_new_movie_card(movie, jq_location){
     // Create and add Column for new card
     let new_col = document.createElement("div");
     new_col.className = "col";
-    console.log(jq_location);
     $(jq_location).append(new_col);
-    console.log($(jq_location));
 
     // Create and add new card
     let card = document.createElement('div');
@@ -151,7 +164,6 @@ async function display_new_movie(jq_location){
 function likes_movie(id_num) {
     add_new_movie_to_list(id_num);
     display_new_movie('.title-display');
-    
 }
 
 function hates_movie(id_num){

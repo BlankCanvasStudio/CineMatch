@@ -44,7 +44,7 @@ router.post('/', function(req,res, next){
         User.findOne({email:user_email}).exec((err, user) => {
             // Might want to do an email search or something instead but idc rn
             if(err){console.log(err); return;}
-            user.to_watch.push(new ObjectID(entertainment));
+            user.to_watch.push(entertainment);
             user.save();
             //res.send('Done');
         });
@@ -56,7 +56,7 @@ router.post('/', function(req,res, next){
             // Might want to do an email search or something instead but idc rn
             if(err){console.log(err); return;}
             removeItem(user.to_watch, entertainment);
-            user.watched.push(new ObjectID(entertainment));
+            user.watched.push(entertainment);
             user.save();
         });
     }

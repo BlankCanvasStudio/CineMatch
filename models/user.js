@@ -11,9 +11,9 @@ let UserSchema = new Schema(
         request_language:{type:String},
         email_verified:{type:Boolean},
         friends: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-        to_watch: [{type: mongoose.Schema.Types.ObjectId, ref: 'Entertainment', unique:true}],
+        to_watch: [{type: mongoose.Schema.Types.ObjectId, ref: 'Entertainment'}],
         watched: [{type: mongoose.Schema.Types.ObjectId, ref: 'Entertainment'}],
-        genres: [{type:String}],
+        genres: [{type: mongoose.Schema.Types.ObjectId, ref: 'Genre'}],
         nickname:{type:String},
         
     }

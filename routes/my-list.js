@@ -47,7 +47,7 @@ router.post('/', function(req,res, next){
           // Might want to do an email search or something instead but idc rn
           if(err){console.log(err); return;}
           removeItem(user.to_watch, entertainment);
-          user.watched.push(new ObjectID(entertainment));
+          user.watched.push(entertainment);
           user.save();
       });
   }
