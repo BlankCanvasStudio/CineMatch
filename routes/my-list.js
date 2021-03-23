@@ -7,16 +7,6 @@ let Genre = require('../models/genre');
 let User = require('../models/user');
 let ObjectID = require('mongodb').ObjectID
 
-function removeItem(array, item) {
-  var i = array.length;
-
-  while (i--) {
-      if (array[i].toString() === item) {
-          array.splice(array.indexOf(item), 1);
-      }
-  }
-}
-
 router.get('/', function(req, res, next){
     let user_id = req.oidc.user.sub.split('|')[1];
     let user_email = req.oidc.user.email;
@@ -39,6 +29,11 @@ router.get('/', function(req, res, next){
         res.render('my-list', { title:"CineMatch: Your List", entertainment:user.to_watch, entertainment_watched:user.watched });
     });
 });
+
+module.exports = router;
+
+
+/*
 router.post('/', function(req,res, next){
   if(req.body.type==="move-to-watched"){
       let user_id = req.oidc.user.sub.split('|')[1];
@@ -72,5 +67,4 @@ router.post('/', function(req,res, next){
     }); 
   }
 })
-
-module.exports = router;
+*/

@@ -8,6 +8,21 @@ let User = require('../models/user');
 const reteieve = require('../population/retrieve-titles/retrieve.js');
 let ObjectID = require('mongodb').ObjectID
 
+router.get('/', function(req, res, next) {
+    reteieve.return_home_default("Netflix", 15, () => {
+        reteieve.return_home_default((req.query.platform || "Netflix").replace("Plus", "+"), 15, (entertainment) => {
+            // + denotes another value so we had to change is to 'Plus' then we replace it with + but if the param isn't there then we 
+                // have an issue so we put it outside the quotes and it works just fine
+            res.render('home', { title: 'CineMatch Home', entertainment:entertainment });
+        });
+    });
+});
+
+module.exports = router;
+
+
+// We moved this to /load
+/*
 function ent_to_JSObj(entertainment){
     let new_ent = {
         "title": entertainment.title,
@@ -23,13 +38,15 @@ function ent_to_JSObj(entertainment){
 }
 function removeItem(array, item) {
     var i = array.length;
-  
+    let removed = false;
     while (i--) {
         if (array[i].toString() === item) {
             array.splice(array.indexOf(item), 1);
+            removed = true;
         }
     }
-  }
+    return removed;
+}
 
 router.post('/', function(req,res, next){
     if(req.body.type==="new-movie"){
@@ -87,15 +104,4 @@ router.post('/', function(req,res, next){
         }); 
     }
 })
-
-router.get('/', function(req, res, next) {
-    let entertainment = reteieve.return_home_default("Netflix", 15, (entertainment) => {
-        reteieve.return_home_default((req.query.platform || "Netflix").replace("Plus", "+"), 15, (entertainment) => {
-            // + denotes another value so we had to change is to 'Plus' then we replace it with + but if the param isn't there then we 
-                // have an issue so we put it outside the quotes and it works just fine
-            res.render('home', { title: 'CineMatch Home', entertainment:entertainment });
-        });
-    });
-});
-
-module.exports = router;
+*/

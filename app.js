@@ -5,11 +5,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const axios = require('axios');
 
-var indexRouter = require('./routes/index');
 var adminRouter = require('.//routes/admin');
 var homeRouter = require('./routes/home');
 var listRouter = require('./routes/my-list');
 var friendsRouter = require('./routes/friends');
+var loadRouter = require('./routes/load');
+var settingsRouter = require('./routes/settings');
 
 var app = express();
 
@@ -49,9 +50,10 @@ app.use('/admin', requiresAuth(), adminRouter);
 app.use('/friends', requiresAuth(), friendsRouter);
 app.use('/home', requiresAuth(), homeRouter);
 app.use('/my-list', requiresAuth(), listRouter);
-app.get('/settings', requiresAuth(), (req, res) => {
+app.use('/load', requiresAuth(), loadRouter);
+app.use('/settings', requiresAuth(), settingsRouter);/*(req, res) => {
   res.send(JSON.stringify(req.oidc.user));
-});
+});*/
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

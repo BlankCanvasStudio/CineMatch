@@ -5,43 +5,140 @@ let Entertainment = require('../models/entertainment');
 let Image = require('../models/image');
 let Genre = require('../models/genre');
 let User = require('../models/user');
+const reteieve = require('../population/retrieve-titles/retrieve.js');
 let ObjectID = require('mongodb').ObjectID
 
-router.get('/', (req, res, next) => {
-    let user_email = req.oidc.user.email;
-    // Email should hopefully be a unique identifier
-    // We aren't going to be populating entertainment because the object ID
-        // Comparision will be way easier then we populate only the matching ones
-    User.findOne({email:user_email}).populate(
-        {
-            path: 'friends',
-            model:'User',
-            populate:{
-                path:'genres',
-                model:'Genre'
-        }}).populate({
-            path: 'friend_requests',
-            model:'User',
-            populate:{
-                path:'to_watch',
-                model:'Entertainment',
-                populate:{
-                    path:'img',
-                    model:'Image',
-                }
+// Helper functions
+function ent_to_JSObj(entertainment){
+    let new_ent = {
+        "title": entertainment.title,
+        "url": entertainment.url,
+        "description": entertainment.description, 
+        "genres": entertainment.genre,
+        "platform": entertainment.platform,
+        "img_src": entertainment.img.src,
+        "img_alt": entertainment.img.alt,
+        "id":entertainment._id,
+    };
+    return new_ent;
+}
+function removeItem(array, item) {
+    var i = array.length;
+    let removed = false;
+    while (i--) {
+        if (array[i].toString() === item) {
+            array.splice(i, 1);
+            removed = true;
+        }
+    }
+    return removed;
+}
 
-        }}).exec((err, user) => {
-        res.render('friends', { title:"CineMatch: Your Friends", user:user});
+function removeItem(array, item) {
+    var i = array.length;
+    let removed = false;
+    while (i--) {
+        if (array[i].toString() === item) {
+            array.splice(array.indexOf(item), 1);
+            removed = true;
+        }
+    }
+    return removed;
+}
+function prevent_user_redundancies(users){
+    added_user_email = [];
+    non_redundant = []
+    users.forEach((c) => {
+        if (!added_user_email.includes(c.email)) {
+            non_redundant.push(c);
+            added_user_email.push(c.email);
+        }
     });
-    
-});
-module.exports = router;
+    return non_redundant;
+}
+function ent_to_JSObj(entertainment){
+    let new_ent = {
+        "title": entertainment.title,
+        "url": entertainment.url,
+        "description": entertainment.description, 
+        "genres": entertainment.genre,
+        "platform": entertainment.platform,
+        "img_src": entertainment.img.src,
+        "img_alt": entertainment.img.alt,
+        "id":entertainment._id,
+    };
+    return new_ent;
+}
+function user_to_JSObj(user){
+    let genres = "";
+    if(user.genres.length){
+        let len = user.genres.length-1;
+        for(let i=0; i<len;i++){
+            genres+=user.genres[i].text+", ";
+        }
+        genres+=user.genres[len].text;
+    } else {
+        genres="None"
+    }
+    let new_user = {
+        "genres":genres,
+        "nickname":user.nickname,
+        "email":user.email,
+        "to_watch":user.to_watch,
+    };
+    return new_user;
+}
+function users_array_to_JSObj (users){
+    if(!Array.isArray(users)){users=[users];}
+    users = prevent_user_redundancies(users);
+    let toReturn = [];
+    let len = users.length;
+    for(let i=0; i<len; i++){
+        toReturn.push(user_to_JSObj(users[i]));
+    }
+    return {"users":toReturn};
+}
+function return_common_elements(arr1, arr2){
+    let common=[];
+    let len;
+    if(arr1.length > arr2.length){
+        len = arr1.length;
+        for(let i=0;i<len; i++){
+            if(arr2.indexOf(arr1[i])>-1){
+                console.log('true');
+                common.push(arr1[i])
+            }
+        }
+    } else {
+        len = arr2.length;
+        for(let i=0;i<len; i++){
+            if(arr1.indexOf(arr2[i])>-1){
+                console.log('true');
+                common.push(arr2[i])
+            }
+        }
+    } 
+    console.log('in common elements');
+    return common;
+}
 
-// We moved this to the /load route to avoid redundancies
-/*
-router.post('/', (req, res, next)=>{
+
+
+
+// The post request loading all this shit 
+    // Tbh it might be better to load this use different urls but we are here now
+router.post('/', function(req,res, next){
+    console.log(req.body.type);
     if(req.body.type === "new-movie"){
-        return;
+        if(req.body.path ==="/my-list" || req.body.path === "/friends"){
+            return;
+        }
+        console.log(req.body.path)
+        //if()
+        let platform = ((req.body.platform || req.query.platform) || Netflix).replace('Plus', '+');
+        reteieve.return_new_film(platform, (entertainment) => {
+            res.json(ent_to_JSObj(entertainment));
+        });
     }
     if(req.body.type==="load-movie"){
         Entertainment.findOne({_id:req.body.id_num}).populate('img').exec((err, entertainment)=>{
@@ -79,7 +176,7 @@ router.post('/', (req, res, next)=>{
             // The $options: $i is to make the lookup case insensitive. Very helpful
             if(err_1){console.log(err); return}
             User.findOne({email:req.oidc.user.email}).exec((err_1, calling_user)=>{
-                if(user!==null && remove_user !== null){
+                if(calling_user!==null && other_user !== null){
                     let common_to_watch = return_common_elements(calling_user.to_watch, other_user.to_watch);
                     let common_watched = return_common_elements(calling_user.watched, other_user.watched);
                     res.json({ "to_watch":common_to_watch, "watched":common_watched, "status":"success" });
@@ -173,7 +270,7 @@ router.post('/', (req, res, next)=>{
     }
     if(req.body.type==="add-friend"){
         User.findOne({email:req.oidc.user.email}).exec((err, friended_user) => {
-            User.findOne({ email:req.body.req_email }).exec((err, requesting_user) => {
+            User.findOne({ email:req.body.add_email }).exec((err, requesting_user) => {
                 if(friended_user!==null && requesting_user !== null){
                     console.log(friended_user._id);
                     friended_user.friends.push(requesting_user._id);
@@ -202,7 +299,7 @@ router.post('/', (req, res, next)=>{
                 if(user!==null && remove_user !== null){
                     console.log(user, remove_user);
                     let index = user.friend_requests.indexOf(remove_user._id);
-                    ser.friend_requests.splice(index, 1);
+                    user.friend_requests.splice(index, 1);
                     user.save();
                     res.send({ "status":"success" });
                     return
@@ -219,19 +316,26 @@ router.post('/', (req, res, next)=>{
             });
         });
     }
+    if(req.body.type==="remove-from-watched"){
+        let user_email = req.oidc.user.email;
+        let entertainment = req.body.id_num;
+        User.findOne({email:user_email}).exec((err, user) => {
+            // Might want to do an email search or something instead but idc rn
+            if(err){console.log(err); return;}
+            removeItem(user.watched, entertainment);
+            user.save();
+        }); 
+    }
+    if(req.body.type==="remove-from-list"){
+        let user_email = req.oidc.user.email;
+          let entertainment = req.body.id_num;
+          User.findOne({email:user_email}).exec((err, user) => {
+              // Might want to do an email search or something instead but idc rn
+              if(err){console.log(err); return;}
+              removeItem(user.to_watch, entertainment);
+              user.save();
+          });
+    }
 });
-*/
 
-/*
-if(user!==null && remove_user !== null){
-                    
-    res.send({ "status":"success" });
-    return
-} else if (remove_user === null) {
-
-} else if (user === null) {
-
-}
-res.send({ "status":"failure:both" });
-return
-*/
+module.exports = router;

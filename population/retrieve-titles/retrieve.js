@@ -18,7 +18,7 @@ async function return_home_default(plat, num, next){
 
 async function return_new_film(plat, next){
     if(plat === "All"){
-        Entertainment.findOne({}).populate('img').exec((err, ent) => {
+        Entertainment.findOne({}).populate('img').exec((err, ent_list) => {
             if(err){console.log(err);}
             next(ent_list||[]);
         });

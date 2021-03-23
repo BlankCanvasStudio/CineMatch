@@ -86,8 +86,21 @@ div.col {
 .matched-movies .row.title .col {
   text-align:center;
 }
-
-
+.friend-controls .col{ 
+  margin-top:0px;
+}
+.friend-controls .col.add{ 
+  padding-right:0px;
+}
+.friend-controls .col.remove{ 
+  padding-left:0px;
+}
+div.friend-requests {
+  margin-bottom: 2rem;
+}
+.find-matched { 
+  margin-bottom: 1rem;
+}
 
 /* Color Palette */
 :root{

@@ -7,15 +7,30 @@ block edit_title
 block content 
     div.row.fill-height
         div.col-2.friends-menu.yellow-2
-            h3 <u>Friends</u>
-            div#list-tab.list-group(role="tablist")
-                for friend in user.friends 
+            div.friend-requests
+                if user.friend_requests.length 
+                    h3 <u>Friend Requests</u>
+                    div#list-tab.list-group(role="tablist")
+                        for request in user.friend_requests 
+                            div.req-parent
+                                a.list-group-item.list-group-item-action.potential-friend-btn(id="list-"+request.email.split('@')[0]+"-list" data-toggle="list" href="#potential-friend" role="tab" aria-controls=request.email.split('@')[0] data-email=request.email data-genres:request.genres)
+                                    | #{request.nickname}
+                                div.row.friend-controls
+                                    div.col.add
+                                        a.btn.btn-sm.btn-block.btn-success.add-friend(data-email=request.email) Add friend
+                                    div.col.remove
+                                        a.btn.btn-sm.btn-block.btn-danger.delete-request(data-email=request.email) Delete Request
+
+
+            div.actual-friends
+                h3 <u>Friends</u>
+                div#list-tab.list-group.friends-list(role="tablist")
+                    for friend in user.friends 
                         a.list-group-item.list-group-item-action(id="list-"+friend.email.split('@')[0]+"-list" data-toggle="list" href="#"+friend.email.split('@')[0] role="tab" aria-controls=friend.email.split('@')[0])
                             | #{friend.nickname}
                         a.btn.btn-sm.btn-primary.find-matched.btn-primary(data-email=friend.email data-toggle="list" href="#matched-movies") Find Things to Watch!
-                        
-                else 
-                    h4 You have no friends!
+                    else 
+                        h4 You have no friends!
 
         div.col.friends-main.yellow-2
             div.row.friends-lookup
@@ -50,16 +65,25 @@ block content
                                 div(class="row watched-list watched-"+friend.email.split('@')[0])
                                     for ent in friend.watched 
                                         input(type="hidden" value=ent)
-                            
+                        
                         div#potential-friend.potential-friend.tab-pane.container(role="tabpannel" aria-labelledby="list-potential-friend-list")
-                            h2.name <u>potential friends's Profile</u>
-                            h5.genres Likes: No liked genres listed 
-                            h4 Their List: 
-                            div(class="row to-watch-list to-watch-potential-friend")
-                            <br/>
-                            <br/>
-                            h4 Their Watched List:
-                            div(class="row watched-list watched-potential-friend")
+                            div.row 
+                                //- This is a hysterical way to center the name row but it works 
+                                div.col
+                                div.col
+                                    h2.name <u>potential friends's Profile</u>
+                                    h5.genres Likes: No liked genres listed 
+                                
+                                div.col 
+                                    button.btn.btn-primary.request-friend(style="float:right") Add Friend
+                            div.row 
+                                div.col
+                                    h4 Their List: 
+                                    div(class="row to-watch-list to-watch-potential-friend")
+                            div.row 
+                                div.col
+                                    h4 Their Watched List:
+                                    div(class="row watched-list watched-potential-friend")
 
                         div#matched-movies.container.matched-movies.tab-pane(role="tabpannel" aria-labelledby="list-matched-movies-list")
                             div.row.title

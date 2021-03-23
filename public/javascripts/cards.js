@@ -14,36 +14,61 @@ var getUrlParameter = function getUrlParameter(sParam) {
 
 async function load_new_movie(next, jq_location){
     let plat = $('#navbarDropdown').text();
-    $.post(window.location.pathname+'?platform='+plat, { type:"new-movie", platform:plat }, function(data, status){
+    $.post('/load?platform='+plat, { type:"new-movie", platform:plat, path:window.location.pathname }, function(data, status){
         next(data, jq_location);
     });
 }
 async function load_specific_movie(id_num, next, jq_location){
     let plat = $('#navbarDropdown').text();
-    $.post(window.location.pathname+'?platform='+plat, { type:"load-movie", platform:plat, id_num:id_num }, function(data, status){
+    $.post('/load?platform='+plat, { type:"load-movie", platform:plat, id_num:id_num }, function(data, status){
         next(data, jq_location);
 
     });
 }
 async function add_new_movie_to_list(id_num, next){
     let plat = $('#navbarDropdown').text();
-    $.post(window.location.pathname+'?platform='+plat, { type:"add-to-list", id_num:id_num });
+    $.post('/load?platform='+plat, { type:"add-to-list", id_num:id_num }, function(data, status){
+        if(data.status === "success"){return}
+        else {
+            let failure_code = data.status.split(':')[1];
+            if (failure_code === "entertainment") {
+                console.log("the removing user couldn't be found");
+            } else if (failure_code === "user") {
+                console.log("your user is missing somehow?");
+            } else if (failure_code === "both") {
+                console.log("Both of the users involved couldn't be found (probably server or database error)");
+            }
+        }
+    });
 }
 function watched(id_num){
     let plat = $('#navbarDropdown').text();
-    $.post(window.location.pathname, { type:"move-to-watched", id_num:id_num });
+    $.post('/load', { type:"move-to-watched", id_num:id_num }, function(data, status){
+        if(data.status === "success"){return}
+        else {
+            let failure_code = data.status.split(':')[1];
+            if (failure_code === "entertainment") {
+                console.log("the removing user couldn't be found");
+            } else if (failure_code === "user") {
+                console.log("your user is missing somehow?");
+            } else if (failure_code === "both") {
+                console.log("Both of the users involved couldn't be found (probably server or database error)");
+            }
+        }
+    });
 }
 function remove_from_list(id_num){
     let plat = $('#navbarDropdown').text();
-    $.post(window.location.pathname, { type:"remove-from-list", id_num:id_num });
+    $.post('/load', { type:"remove-from-list", id_num:id_num });
 }
 function remove_from_watched(id_num){
     let plat = $('#navbarDropdown').text();
-    $.post(window.location.pathname, { type:"remove-from-watched", id_num:id_num });
+    $.post('/load', { type:"remove-from-watched", id_num:id_num });
 }
 
 async function build_new_movie_card(movie, jq_location){
     // Create and add Column for new card
+    let path = window.location.pathname;
     let new_col = document.createElement("div");
     new_col.className = "col";
     $(jq_location).append(new_col);
@@ -65,7 +90,9 @@ async function build_new_movie_card(movie, jq_location){
     header.className = "card-header header-top";
     // Create close button and add it
     let close_button = document.createElement('button');
+    // We might want to add stuff here for when we move from to watch to watched (lmao)
     close_button.className = "close decision";
+    
     $(close_button).attr("type", "button");
     $(close_button).attr("aria-label", "Close");
     close_button.innerHTML = "<span aria-hidden=\"true\">&times;</span>";
@@ -185,14 +212,40 @@ function populate_profile_watched(id_num, nickname){
     }
 }
 
+
 $(document).ready(() => {
-    $(document).on("click", ".decision", function() {
-        // This makes the element disappear then removes it cause we don't want all the 
-            // Extra and unused titles to be saved when they are actual garbage
-        $($(this).parents()[2]).fadeOut("slow", function(){
-            $(this).remove();
+    let path = window.location.pathname;
+    let searchParams = getUrlParameter('platform');
+    if(searchParams){
+        $('#navbarDropdown').text(searchParams.replace("Plus", "+"));
+    }
+    if(path !== "/friends"){
+        $(document).on("click", ".decision", function() {
+            // This makes the element disappear then removes it cause we don't want all the 
+                // Extra and unused titles to be saved when they are actual garbage
+            let list = $($(this).parents()[3]).hasClass('my-list') ? 'my-list' : 'watched-list';
+            console.log($(this).parents()[3]);
+            $($(this).parents()[2]).fadeOut("slow", function(){
+                // This now refers to the card parent
+                
+            });
+            if(path !== '/my-list'){
+                // There might be a better way to optimize this but this is how we are doing 
+                    // it for now
+                display_new_movie('.title-display');
+                $($(this).parents()[2]).remove();
+            } else {
+                if(list === 'my-list'){
+                    console.log('should be moving to watched')
+                    $('.watched-list').append($(this).parents()[2]);
+                    $($(this).parents()[2]).fadeIn("slow");
+                    $($(this).parent()).hide();
+                        // This needs to be hidden and not removed so that the click trigger 
+                            // to move it from to watch to watched will go off
+                }
+            }
         });
-    });
+    }
     $(document).on("click", ".negative", function() {
         let id_num = $($(this).parents()[1]).find('input.id_num').val()
             // This is purely for readability
@@ -218,6 +271,6 @@ $(document).ready(() => {
     });
     $(document).on("click", ".rm-watched", function(){
         let id_num = $($(this).parents()[1]).find('input.id_num').val()
-        remove_from_list(id_num);
+        remove_from_watched(id_num);
     });
 });
