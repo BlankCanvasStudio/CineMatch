@@ -26,6 +26,7 @@ const config = {
   authRequired: false,
   auth0Logout: true,
   secret: 'a long, randomly-generated string stored in env',
+  //baseURL: 'http://localhost:3000/',
   baseURL: 'https://bcs-cinematch.herokuapp.com/',
   clientID: 'JBkaortATzYpOG4vfArvZOhKe7TBVIFr',
   issuerBaseURL: 'https://dev-igdtmyli.us.auth0.com'

@@ -9,17 +9,23 @@ const reteieve = require('../population/retrieve-titles/retrieve.js');
 let ObjectID = require('mongodb').ObjectID
 
 router.get('/', function(req, res, next) {
-    res.render('settings', { title: 'Your Settings', me:req.oidc.user , error:"None"});
+    User.findOne({email:req.oidc.user.email}).exec((err, my) => {
+        if (my===null || my===undefined) {
+            res.render('settings', { title: 'Your Settings', me:req.oidc.user , error:"NoUser"});
+            return;
+        }
+        res.render('settings', { title: 'Your Settings', me:my , error:"None"});
+    });
 });
 router.post('/', function(req, res, next){
     User.findOne({email:req.oidc.user.email}).exec((err, my) => {
         if(err){console.log(err); return;}
+        console.log(req.body);
         if(my !== null && my !== undefined){
             my.name = req.body.name;
-            my.username = req.body.username;
-            my.email = req.body.email;
+            my.nickname = req.body.username;
             my.save();
-            res.render('settings', { title: 'Your Settings', me:req.oidc.user , error:"None"});
+            res.render('settings', { title: 'Your Settings', me:my , error:"None"});
         } else {
             res.render('settings', { title: 'Your Settings', me:req.oidc.user , error:"NoUser"});
         }

@@ -9,7 +9,7 @@ block content
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <strong>Warning!</strong> An error occured. Your changes were not saved!
 
-    div.row 
+    //-div.row 
         div.col
             div.container(style="text-align:center;")
                 image(src=me.picture)
@@ -28,5 +28,5 @@ block content
                     div.input-group.mb-3
                         div.input-group-prepend
                             span.input-group-text(id="basic-addon3") Email: 
-                        input.form-control(type="text" id="email" aria-describedby="basic-addon3" value=me.email name="email")
+                        input.form-control(type="text" id="email" aria-describedby="basic-addon3" value=me.email name="email" disabled)
                     button.btn.btn-success(type="submit") Update Profile

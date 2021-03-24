@@ -16,6 +16,8 @@ let UserSchema = new Schema(
         watched: [{type: mongoose.Schema.Types.ObjectId, ref: 'Entertainment'}],
         genres: [{type: mongoose.Schema.Types.ObjectId, ref: 'Genre'}],
         nickname:{type:String},
+        name:{type:String},
+        picture:{type:String},
         
     }
 );
