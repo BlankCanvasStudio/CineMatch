@@ -16,7 +16,7 @@ var app = express();
 
 // Connect to mongoDB Database 
 const mongoose = require('mongoose');
-mongoose.connect("mongodb+srv://BlankCanvasStudio:Kab00m12@cluster0.hmcxw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://heroku:Alpha2Star@cluster0.hmcxw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
   useUnifiedTopology: true,
   useNewUrlParser: true
 });
