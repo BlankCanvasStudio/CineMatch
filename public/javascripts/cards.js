@@ -190,11 +190,11 @@ async function display_new_movie(jq_location){
 
 function likes_movie(id_num) {
     add_new_movie_to_list(id_num);
-    display_new_movie('.title-display');
+    //display_new_movie('.title-display');
 }
 
 function hates_movie(id_num){
-    display_new_movie('.title-display');
+    //display_new_movie('.title-display');
 }
 
 function populate_profile_to_watch(id_num, nickname){
@@ -228,22 +228,23 @@ $(document).ready(() => {
             $($(this).parents()[2]).fadeOut("slow", function(){
                 // This now refers to the card parent
                 
-            });
-            if(path !== '/my-list'){
-                // There might be a better way to optimize this but this is how we are doing 
-                    // it for now
-                display_new_movie('.title-display');
-                $($(this).parents()[2]).remove();
-            } else {
-                if(list === 'my-list'){
-                    console.log('should be moving to watched')
-                    $('.watched-list').append($(this).parents()[2]);
-                    $($(this).parents()[2]).fadeIn("slow");
-                    $($(this).parent()).hide();
-                        // This needs to be hidden and not removed so that the click trigger 
-                            // to move it from to watch to watched will go off
+            
+                if(path !== '/my-list'){
+                    // There might be a better way to optimize this but this is how we are doing 
+                        // it for now
+                    display_new_movie('.title-display');
+                    $(this).remove();
+                } else {
+                    if(list === 'my-list'){
+                        console.log('should be moving to watched')
+                        $('.watched-list').append(this);
+                        $(this).fadeIn("slow");
+                        $($(this).find('.watched-btn-cntr')).hide();
+                            // This needs to be hidden and not removed so that the click trigger 
+                                // to move it from to watch to watched will go off
+                    }
                 }
-            }
+            });
         });
     }
     $(document).on("click", ".negative", function() {

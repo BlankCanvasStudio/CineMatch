@@ -19,7 +19,7 @@ block content
                             h3.card-title #{entertainment[i].title}
                         a(href=entertainment[i].url)
                             img.card-img-top(src=entertainment[i].img.src alt=entertainment[i].img.alt)
-                        div.card-header
+                        div.card-header.watched-btn-cntr
                             button.btn.btn-block.btn-success.decision.watched(type="button") Watched
                         div.card-body 
                             p.card-text #{entertainment[i].description}

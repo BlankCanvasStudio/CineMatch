@@ -9,12 +9,10 @@ const reteieve = require('../population/retrieve-titles/retrieve.js');
 let ObjectID = require('mongodb').ObjectID
 
 router.get('/', function(req, res, next) {
-    reteieve.return_home_default("Netflix", 15, () => {
-        reteieve.return_home_default((req.query.platform || "Netflix").replace("Plus", "+"), 15, (entertainment) => {
-            // + denotes another value so we had to change is to 'Plus' then we replace it with + but if the param isn't there then we 
-                // have an issue so we put it outside the quotes and it works just fine
-            res.render('home', { title: 'CineMatch Home', entertainment:entertainment });
-        });
+    reteieve.return_home_default((req.query.platform || "Netflix").replace("Plus", "+"), 16, (entertainment) => {
+        // + denotes another value so we had to change is to 'Plus' then we replace it with + but if the param isn't there then we 
+            // have an issue so we put it outside the quotes and it works just fine
+        res.render('home', { title: 'CineMatch Home', entertainment:entertainment });
     });
 });
 

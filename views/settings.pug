@@ -19,14 +19,14 @@ block content
                 form(style="text-align:center;" method="post")
                     div.input-group.mb-3
                         div.input-group-prepend
+                            span.input-group-text(id="basic-addon3") Email: 
+                        input.form-control(type="text" id="email" aria-describedby="basic-addon3" value=me.email name="email" disabled)
+                    div.input-group.mb-3
+                        div.input-group-prepend
                             span.input-group-text(id="basic-addon3") Name: 
                         input.form-control(type="text" id="name" aria-describedby="basic-addon3" value=me.name name="name")
                     div.input-group.mb-3
                         div.input-group-prepend
                             span.input-group-text(id="basic-addon3") Username: 
                         input.form-control(type="text" id="username" aria-describedby="basic-addon3" value=me.nickname name="username")
-                    div.input-group.mb-3
-                        div.input-group-prepend
-                            span.input-group-text(id="basic-addon3") Email: 
-                        input.form-control(type="text" id="email" aria-describedby="basic-addon3" value=me.email name="email" disabled)
                     button.btn.btn-success(type="submit") Update Profile

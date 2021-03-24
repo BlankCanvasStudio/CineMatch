@@ -118,10 +118,12 @@ div.friend-requests {
 
 /* Coloring the page nicely below this point */
 .main-body, 
-.title-display {
+.title-display,
+.main-body .row {
   /* These need to be the same color so we get around growing and color issues */ 
   background: var(--yellow-2);
 }
+
 .yellow-2{
   background: var(--yellow-2);
 }

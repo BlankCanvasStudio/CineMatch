@@ -130,6 +130,7 @@ function return_common_elements(arr1, arr2){
 router.post('/', function(req,res, next){
     console.log(req.body.type);
     if(req.body.type === "new-movie"){
+        console.log('load movie triggered');
         if(req.body.path ==="/my-list" || req.body.path === "/friends"){
             return;
         }
@@ -141,6 +142,7 @@ router.post('/', function(req,res, next){
         });
     }
     if(req.body.type==="load-movie"){
+        
         Entertainment.findOne({_id:req.body.id_num}).populate('img').exec((err, entertainment)=>{
             res.json(ent_to_JSObj(entertainment));
         }); 
