@@ -223,7 +223,7 @@ $(document).ready(() => {
         $(document).on("click", ".decision", function() {
             // This makes the element disappear then removes it cause we don't want all the 
                 // Extra and unused titles to be saved when they are actual garbage
-            let list = $($(this).parents()[3]).hasClass('my-list') ? 'my-list' : 'watched-list';
+            
             console.log($(this).parents()[3]);
             $($(this).parents()[2]).fadeOut("slow", function(){
                 // This now refers to the card parent
@@ -234,16 +234,7 @@ $(document).ready(() => {
                         // it for now
                     display_new_movie('.title-display');
                     $(this).remove();
-                } else {
-                    if(list === 'my-list'){
-                        console.log('should be moving to watched')
-                        $('.watched-list').append(this);
-                        $(this).fadeIn("slow");
-                        $($(this).find('.watched-btn-cntr')).hide();
-                            // This needs to be hidden and not removed so that the click trigger 
-                                // to move it from to watch to watched will go off
-                    }
-                }
+                } 
             });
         });
     }
@@ -259,6 +250,19 @@ $(document).ready(() => {
     $(document).on("click", ".watched", function(){
         let id_num = $($(this).parents()[1]).find('input.id_num').val()
         watched(id_num);
+        if(path==='/my-list') {
+            let list = $($(this).parents()[3]).hasClass('my-list') ? 'my-list' : 'watched-list';
+            if(list === 'my-list'){
+                console.log('should be moving to watched')
+                $('.watched-list').append(this);
+                $(this).fadeIn("slow");
+                $($(this).find('.watched-btn-cntr')).hide();
+                    // This needs to be hidden and not removed so that the click trigger 
+                        // to move it from to watch to watched will go off
+            }
+        } else {
+            display_new_movie('.title-display');
+        }
     });
     $(document).on("click", ".watched-home", function(){
         // We want this to move to watch and add new movie but in a place like list we don't want it to add a new movie

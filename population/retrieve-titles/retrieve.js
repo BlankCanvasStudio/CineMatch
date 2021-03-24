@@ -28,7 +28,7 @@ async function return_new_film(plat, next){
                 // should be drawn from the database
     }
     await Entertainment.populate(movie_cursor, {path: "img"});
-    next(movie_cursor);
+    next(movie_cursor[0]);
 }
 
 exports.return_home_default = return_home_default;
