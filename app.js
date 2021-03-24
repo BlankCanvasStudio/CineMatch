@@ -26,7 +26,7 @@ const config = {
   authRequired: false,
   auth0Logout: true,
   secret: 'a long, randomly-generated string stored in env',
-  baseURL: 'https://glacial-meadow-31018.herokuapp.com/',
+  baseURL: 'https://bcs-cinematch.herokuapp.com/',
   clientID: 'JBkaortATzYpOG4vfArvZOhKe7TBVIFr',
   issuerBaseURL: 'https://dev-igdtmyli.us.auth0.com'
 };
