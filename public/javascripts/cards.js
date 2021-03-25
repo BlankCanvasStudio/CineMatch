@@ -253,10 +253,13 @@ $(document).ready(() => {
         if(path==='/my-list') {
             let list = $($(this).parents()[3]).hasClass('my-list') ? 'my-list' : 'watched-list';
             if(list === 'my-list'){
-                console.log('should be moving to watched')
+
+                $('.watched-list-title').fadeIn("slow");
+                $('.watched-list').fadeIn("slow");
                 $('.watched-list').append(this);
                 $(this).fadeIn("slow");
                 $($(this).find('.watched-btn-cntr')).hide();
+                
                     // This needs to be hidden and not removed so that the click trigger 
                         // to move it from to watch to watched will go off
             }
