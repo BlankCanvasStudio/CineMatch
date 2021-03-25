@@ -55,6 +55,9 @@ app.use('/my-list', requiresAuth(), listRouter);
 app.use('/load', requiresAuth(), loadRouter);
 app.use('/settings', requiresAuth(), settingsRouter);
 app.use('/search', requiresAuth(), searchRouter);
+app.use('/.well-known/acme-challenge/vZZc7-c4IqxlUN83JQscPLaIHrOmFW4GFF-zR-lCRcU', (req, res)=>{
+  res.send('vZZc7-c4IqxlUN83JQscPLaIHrOmFW4GFF-zR-lCRcU.NPODKg_2JC_vLkg8DG0OUthRKPPbZC-twIvOQiXj0FQ')
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
