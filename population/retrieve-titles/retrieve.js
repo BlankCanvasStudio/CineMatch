@@ -2,6 +2,8 @@ let Entertainment = require('../../models/entertainment');
 let Image = require('../../models/image');
 let Genre = require('../../models/genre');
 const { networkConditions } = require('puppeteer');
+let puppeteer = require('puppeteer');
+const scrape = require('../scraping/flixable-scrape');
 
 async function return_home_default(plat, num, next){
     let ent_list = []
@@ -30,6 +32,8 @@ async function return_new_film(plat, next){
     await Entertainment.populate(movie_cursor, {path: "img"});
     next(movie_cursor[0]);
 }
+
+
 
 exports.return_home_default = return_home_default;
 exports.return_new_film = return_new_film;

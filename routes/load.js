@@ -338,6 +338,9 @@ router.post('/', function(req,res, next){
               user.save();
           });
     }
+    if(req.body.type === 'search-for-title'){
+        let plat = req.body.platform;
+    }
 });
 
 module.exports = router;

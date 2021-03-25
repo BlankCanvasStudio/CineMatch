@@ -41,8 +41,8 @@ html
             li.nav-item
               a.nav-link(href="/settings") Settings
 
-          form.form-inline.my-2.my-lg-0
-            input.form-control.mr-sm-2(type="search" placeholder="Search For Title" aria-label="Search")
+          form.form-inline.my-2.my-lg-0(method="get" action='/search')
+            input.form-control.mr-sm-2(type="search" placeholder="Search For Title" aria-label="Search" name="search-terms" id="search-terms")
             button.btn.btn-outline-light.my-2.my-sm-0(type="submit") Find
     div.container-fluid.main-body
       block content

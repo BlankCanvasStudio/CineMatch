@@ -15,6 +15,10 @@ router.get('/', function(req, res, next) {
         res.render('home', { title: 'CineMatch Home', entertainment:entertainment });
     });
 });
+router.get('/testing', function(req, res, next){
+    reteieve.scrape_search("testing");
+    res.send('it is done');
+});
 
 module.exports = router;
 

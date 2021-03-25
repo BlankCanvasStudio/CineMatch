@@ -11,6 +11,7 @@ var listRouter = require('./routes/my-list');
 var friendsRouter = require('./routes/friends');
 var loadRouter = require('./routes/load');
 var settingsRouter = require('./routes/settings');
+var searchRouter = require('./routes/search');
 
 var app = express();
 
@@ -52,9 +53,8 @@ app.use('/friends', requiresAuth(), friendsRouter);
 app.use('/home', requiresAuth(), homeRouter);
 app.use('/my-list', requiresAuth(), listRouter);
 app.use('/load', requiresAuth(), loadRouter);
-app.use('/settings', requiresAuth(), settingsRouter);/*(req, res) => {
-  res.send(JSON.stringify(req.oidc.user));
-});*/
+app.use('/settings', requiresAuth(), settingsRouter);
+app.use('/search', requiresAuth(), searchRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
